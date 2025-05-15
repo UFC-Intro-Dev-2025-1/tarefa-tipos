@@ -2,184 +2,303 @@
 
 <!-- toc -->
 
--   [O que é uma variável?](#o-que-é-uma-variável)
--   [Declarando uma variável](#declarando-uma-variável)
--   [Criação de variáveis](#criação-de-variáveis)
--   [Formatação de Strings](#formatação-de-strings)
+-   [Estrutura de dados](#estrutura-de-dados)
+    -   [Tipagem dinâmica e fraca em JavaScript](#tipagem-dinâmica-e-fraca-em-javascript)
+    -   [Tipagem forte em TypeScript](#tipagem-forte-em-typescript)
+-   [Tipos de dados em TS](#tipos-de-dados-em-ts)
+    -   [Tipos primitivos mais comuns](#tipos-primitivos-mais-comuns)
+        -   [`number`](#number)
+        -   [`string`](#string)
+        -   [`boolean`](#boolean)
+    -   [Tipos primitivos para representar o vazio](#tipos-primitivos-para-representar-o-vazio)
+        -   [`null`](#null)
+        -   [`undefined`](#undefined)
+    -   [Tipos primitivos menos usados](#tipos-primitivos-menos-usados)
+        -   [`bigint`](#bigint)
+        -   [`symbol`](#symbol)
+    -   [O famoso tipo `any`](#o-famoso-tipo-any)
+    -   [Tipos de dados combinados](#tipos-de-dados-combinados)
+        -   [`array`](#array)
+        -   [`tupla`](#tupla)
+        -   [`object`](#object)
+        -   [`enum`](#enum)
+    -   [União de Tipos](#união-de-tipos)
+    -   [Conversão de tipos](#conversão-de-tipos)
 -   [Referências](#referências)
 
 <!-- toc -->
 
-## O que é uma variável?
+## Estrutura de dados
 
-Uma variável é um container para um valor, como um número que podemos usar em uma operação de adição, ou uma sequência de texto que possamos usar como parte de uma oração. Mas uma coisa especial a respeito das variáveis é que seu conteúdo pode mudar.
+Todas as linguagens de programação têm estruturas de dados embutidas, mas geralmente diferem de uma linguagem para outra. Aqui vamos listar as estruturas de dados internas disponíveis em TypeScript e JavaScript.
 
-Outra coisa especial sobra as variáveis é que elas podem conter praticamente qualquer coisa — não apenas cadeias de texto e números. Variáveis também podem conter dados complexos e até mesmo funções completas para fazer coisas incríveis. Você irá aprender mais sobre isso a medida que continuarmos.
+### Tipagem dinâmica e fraca em JavaScript
 
-> **Nota**: Perceba que as **variáveis contém valores**. Essa é uma distinção importante a se fazer. Elas não são os valores; e sim os containers para eles. Você pode pensar nelas sendo pequenas caixas de papelão nas quais você pode guardar coisas..
+JavaScript é uma linguagem dinâmica com tipos dinâmicos. As variáveis em JavaScript não estão diretamente associadas a nenhum tipo de valor específico, e qualquer variável pode receber (e reatribuir) valores de todos os tipos:
 
-![Caixas como variáveis](https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Core/Scripting/Variables/boxes.png)
+```js
+let minhaVariavel = 42; // minhaVariavel agora é um número
+minhaVariavel = 'oi'; // minhaVariavel agora é uma string
+minhaVariavel = true; // minhaVariavel agora é um booleano
+```
 
-## Declarando uma variável
+JavaScript também é uma linguagem de tipagem fraca, o que significa que permite a conversão implícita de tipo quando uma operação envolve tipos incompatíveis, em vez de gerar erros de tipo.
 
-Para usar uma variável primeiro tem que criá-la — mais precisamente, chamamos isso de declarar a variável. Para fazê-lo digitamos a palavra chave var seguido do nome que desejamos dar à variável:
+```js
+const minhaVariavel = 42; //minhaVariavel é um número
+const result = minhaVariavel + '1'; // JavaScript coage minhaVariavel para uma string, então ela pode ser concatenada com o outro operando
+console.log(resultado); // 421
+```
+
+Coerções implícitas (quando ele tenta resolver essa diferença de tipos) são muito convenientes, mas podem ser uma arma em potencial se os desenvolvedores não pretendem fazer a conversão ou pretendem converter na outra direção (por exemplo, string para número em vez de número para string). No exemplo acima, alguém poderia esperar `43` em vez de `421`.
+
+### Tipagem forte em TypeScript
+
+Em TypeScript, você pode usar tipos para definir o formato esperado das variáveis. Isso ajuda a melhorar a verificação de tipos durante a compilação e fornece informações úteis sobre o que é esperado de uma variável em seu código. Aqui estão algumas maneiras de usar tipos em variáveis do TypeScript:
+
+1. **Tipo Explícito:**
+   Você pode declarar o tipo de uma variável explicitamente ao mesmo tempo em que a declara. Por exemplo:
+
+```typescript
+let idade: number = 25;
+let nome: string = 'João';
+```
+
+2. **Inferência de Tipo:**
+   O TypeScript é capaz de inferir o tipo da variável com base no valor que você atribui a ela. Isso é chamado de inferência de tipo. Por exemplo:
+
+```typescript
+let idade = 25; // TypeScript inferirá que "idade" é do tipo number
+let nome = 'João'; // TypeScript inferirá que "nome" é do tipo string
+```
+
+Essas são apenas algumas das maneiras pelas quais você pode usar tipos em variáveis no TypeScript. A vantagem de usar tipos é que eles ajudam a capturar erros de tipo em tempo de compilação, tornando seu código mais robusto e legível.
+
+## Tipos de dados em TS
+
+O TypeScript fornece vários tipos de dados que você pode usar para declarar variáveis e especificar o tipo de valores que essas variáveis podem conter. Aqui estão alguns dos principais tipos de dados em TypeScript:
+
+### Tipos primitivos mais comuns
+
+#### `number`
+
+Representa números como `42`, tanto inteiros quanto números de ponto flutuante. Em JavaScript, e consequentemente em TypeScript, não temos `int` e `float`, apenas `number`.
+
+```typescript
+// Como só usamos o number, para transformar um `float` em `int`, usamos o Math.floor
+const numero: number = 7.83;
+const parteInteira: number = Math.floor(numero);
+console.log(parteInteira); // 7
+```
+
+> `NaN` ("Not a Number") é encontrado quando o resultado de uma operação aritmética não pode ser expresso como um número, apesar de ele ser do tipo `number`.
 
 ```ts
-// TypeScript (TS)
-let meuNome: string;
-let minhaIdade: number;
+const minhaVariavel = 0 / 0;
+console.log(minhaVariavel); /NaN
+```
+
+#### `string`
+
+Representa sequências de caracteres, como `"Olá, mundo!"`. Você pode usar aspas simples (`'`), aspas duplas (`"`) ou crase (`` ` ``) para definir strings. Padronize o uso das aspas. Use a crase para fazer interpolação.
+
+Não existe `char` em JS ou TS. O tipo principal para representar caracteres individuais é o tipo `string`, que representa sequências de caracteres.
+
+```typescript
+// Para acessar o primeiro caractere de uma string,
+// você pode usar a notação de colchetes com o índice dentro :
+// OBS: o índice começa em 0 😬
+const palavra: string = 'Hello';
+const primeiroCaractere: string = palavra[0]; // "H"
+```
+
+### `boolean`
+
+Representa valores booleanos, que podem ser `true` ou `false`. Esse tipo é útil para controle de fluxo e condições.
+
+### Tipos primitivos para representar o vazio
+
+#### `null`
+
+Representa a ausência intencional de valor. É um tipo primitivo que indica que uma variável não tem valor: o vazio.
+
+```typescript
+let valorNulo: null = null; // valorNulo é do tipo null
+```
+
+#### `undefined`
+
+Representa uma variável que foi declarada, mas não inicializada. É o valor padrão de variáveis não atribuídas.
+
+```typescript
+let valorDesconhecido;
+console.log(valorDesconhecido); // undefined
+```
+
+### Tipos primitivos menos usados
+
+#### `bigint`
+
+Representa números inteiros grandes que podem exceder o limite do tipo `number`. Você pode usar o sufixo `n` para indicar um valor `bigint`.
+
+```typescript
+const numeroGrande: bigint = 1234567890123456789012345678901234567890n;
+console.log(numeroGrande); // 1234567890123456789012345678901234567890n
+```
+
+#### `symbol`
+
+Representa um valor único e imutável, usado como identificador de propriedades de objetos.
+
+```typescript
+const simbolo1 = Symbol('descricao');
+const simbolo2 = Symbol('descricao');
+console.log(simbolo1 === simbolo2); // false, cada símbolo é único
+```
+
+### O famoso tipo `any`
+
+O TypeScript tem um tipo especial, `any`, que você pode usar sempre que não quiser erros de verificação de tipo. Basicamente é voltar para o JavaScript puro, onde tudo é `any`. Isso pode ser útil em situações em que você não tem certeza do tipo de um valor ou quando está lidando com bibliotecas de terceiros que não têm definições de tipo. **Use com cautela!**
+
+```typescript
+let variavel: any;
+
+variavel = 10;
+console.log(variavel);
+variavel = 'oie';
+console.log(variavel);
+variavel = true;
+console.log(variavel);
+```
+
+> **Nota**: Quando você não especifica um tipo e o TypeScript não consegue inferi-lo a partir do contexto, o compilador normalmente usará `any`.
+
+### Tipos de dados combinados
+
+#### `array`
+
+Em TypeScript, você pode usar colchetes (`[]`) para declarar um array de um tipo específico. Por exemplo, `number[]` representa um array de números.
+
+```typescript
+// TypeScript
+let numeros: number[] = [1, 2, 3, 4, 5];
+let nomes: string[] = ['Alice', 'Bob', 'Charlie'];
 ```
 
 ```js
-// JavaScript (JS)
-let meuNome;
-let minhaIdade;
+// JavaScript
+let numeros[] = [1, 2, 3, 4, 5];
+let nomes[] = ['Alice', 'Bob', 'Charlie'];
+let tudoMisturado[] = [1, 'Alice', true, null];
 ```
 
-> **Nota**: No JavaScript, todas as instruções em código deve terminar com um ponto e vírgula (`;`) — seu código pode até funcionar sem o ponto e vírgula em linhas únicas, mas provavelmente não irá funcionar quando estiver escrevendo várias linhas de código juntas. Tente pegar o hábito de sempre incluir o ponto e vírgula.
+#### `tupla`
 
-Após a declaração, as variáveis são containers vazios. Quando você insere o nome de uma variável, você deve obter em retorno ou um valor _undefined_ (indefinido), ou se a variável não existir, você recebe uma mensagem de erro.
-
-> **Nota**: O valor _undefined_ é um valor especial que significa que a variável foi declarada, mas ainda não tem um valor definido. Isso é diferente de uma variável que não existe, que resulta em um erro.
-
-## Inicializando uma variável
-
-Uma vez que você declarou uma variável, você pode inicializá-la com um valor. Você faz isso digitando o nome da variável, seguido do sinal de igual (`=`) e o valor que deseja atribuir a ela. Por exemplo:
-
-```ts
-// TS | JS
-meuNome = 'Frida';
-minhaIdade = 29;
-```
-
-Você pode declarar e inicializar uma variável ao mesmo tempo, assim:
-
-```ts
-// TS | JS
-let meuNome = 'Frida';
-let minhIdade = 29;
-```
-
-Isso provavelmente é como irá fazer na maioria das vezes, já que é mais rápido do que fazer as duas ações em duas linhas separadas.
-
-## A diferença entre `var` e `let`
-
-Em JavaScript ou TypeScript, você pode criar variáveis usando as palavras-chave `let`, `var` e `const`.
-
-Tanto `let` quanto `var` são palavras-chave usadas para declarar variáveis, `let` é similar a var em alguns aspectos, mas evita que alguns usuários caiam em momentos “te peguei”.
-
-As razões são um tanto históricas. Quando o JavaScript foi criado, havia apenas `var`. Isso funciona basicamente bem na maioria dos casos, mas tem alguns problemas na maneira como funciona. Portanto, `let` e `const` foram criados nas versões modernas de JavaScript para corrigir seus problemas no processo.
-
-1. **Escopo de Bloco:**
-
-    - **var:** Declarações var possuem regras de escopo estranhas para aqueles acostumados com outras linguagens. As variáveis declaradas com `var` têm escopo de função ou escopo global. Isso significa que declarações var são acessíveis em qualquer lugar dentro da função, módulo, namespace ou escopo global em que estão contidas - o que iremos ver mais à frente - independente do bloco contido. Algumas pessoas chamam isso escopo-var ou escopo de função. Essas regras de escopo podem causar muitos tipos de erros. Um problema que elas deixam exacerbado é o fato de que não é um erro declarar a mesma variável várias vezes.
-
-    - **let:** Quando uma variável é declarada usando `let`, usa-se o que alguns chamam de _escopo léxico_ ou _escopo de bloco_. As variáveis declaradas com `let` têm escopo de bloco, o que significa que elas só são acessíveis dentro do bloco onde foram declaradas, seja um bloco de função, um loop `for`, uma condicional `if`, etc.
-
-    Veja os exemplos em `src/exemplo-variaveis.ts`.
-
-2. **Hoisting (Elevação):**
-
-    - **var:** Variáveis declaradas com `var` são elevadas para o topo do escopo em que foram definidas. Isso permite que você as acesse antes de sua declaração no código, mas pode levar a comportamentos inesperados se não for cuidadoso.
-    - **let:** Variáveis declaradas com `let` não são elevadas (hoisted) para o topo do escopo. Isso significa que você não pode acessar uma variável `let` antes de sua declaração no código.
-
-    Veja os exemplos em `src/exemplo-hoisting-variaveis.ts`.
-
-Em resumo, a preferência em TypeScript é usar `let` em vez de `var`, pois `let` é mais seguro em termos de escopo e ajuda a evitar erros sutis que podem ocorrer devido ao hoisting e ao escopo global compartilhado das variáveis `var`.
-
-## E o `const` ?
-
-Muitas linguagens de programação têm o conceito de constant — um valor que uma vez declarado não pode ser alterado. Há muitas razões pelas quais você deseja fazer isso, desde segurança (se um script de terceiros alterou esses valores, poderia causar problemas) até a depuração e a compreensão do código (é mais difícil alterar acidentalmente valores que não devem ser alterados e bagunçar as coisas).
-
-Nos primeiros dias do JavaScript, não existiam constants. No JavaScript moderno, temos a palavra-chave const, que nos permite armazenar valores que nunca podem ser alterados:
-
-```ts
-const diasNaSemana = 7;
-const horasNoDia = 24;
-```
-
-`const` funciona exatamente da mesma maneira que let, exceto que você não pode atribuir um novo valor a `const`. No exemplo a seguir, a segunda linha geraria um erro:
-
-```ts
-const diasNaSemana = 7;
-diasNaSemana = 8; // erro
-```
-
-## Atualizando uma variável
-
-Uma vez que uma tenha um valor atribuído, você pode atualizar esse valor simplesmente dando a ela um valor diferente. Tente inserir as seguintes linhas no seu console:
-
-```ts
-// TS | JS
-meuNome = 'Frida Kahlo';
-```
-
-## Um adendo sobre regras de nomeação de variáveis
-
-Você pode nomear uma variável praticamente qualquer nome que queira, mas há limitações. Geralmente você deve se limitar a utilizar somente caracteres latinos (0-9, a-z, A-Z) e o caractere underline ( \_ ).
-
-1. Você não deve usar outros caracteres porque eles podem causar erros ou ser difíceis de entender por uma audiência internacional.
-2. Não use underline no início do nome de variáveis — isso é utilizado em certos construtores JavaScript para significar coisas específicas, então pode deixar as coisas confusas.
-3. Não use número no início do nome de variáveis. Isso não é permitido e irá causar um erro.
-   Uma convenção segura é se ater à chamada "lower camel case", onde você junta várias palavras, usando minúscula para a primeira palavra inteira e, em seguida, maiusculiza a primeira letra das palavras subsequentes.
-4. Faça nomes de variáveis intuitivos, para que descrevam o dado que ela contém. Não use letras ou números únicos, ou frases muito longas.
-5. As variáveis diferenciam letras maiúsculas e minúsculas — então `minhaidade` é uma variável diferente de `minhaIdade`.
-6. Um último ponto — você também precisa evitar utilizar palavras reservadas pelo JavaScript como nome para suas variáveis — com isso, queremos dizer as palavras que fazem parte da sintaxe do JavaScript! Então você não pode usar palavras como var, function, let e for como nome de variáveis. Os navegadores vão reconhecê-las como itens de código diferentes e, portanto, você terá erros.
-
-Exemplos de bons nomes:
-
-```ts
-idade;
-minhaIdade;
-inicio;
-corInicial;
-valorFinalDeSaida;
-audio1;
-audio2;
-```
-
-Exemplos ruins de nomes:
-
-```ts
-1
-a
-\_12
-minhaidade
-MINHAIDADE
-var
-Document
-skjfndskjfnbdskjfb
-esseeumnomedevariavelbemlongoeestupido
-```
-
-## Formatação de Strings
-
-Em TypeScript, você pode formatar strings de várias maneiras usando strings de modelo (template strings) e concatenação. Aqui estão algumas abordagens comuns para formatar strings:
-
-1. **String de Modelo (Template String):**
-   As strings de modelo são uma maneira conveniente de formatar strings, permitindo que você insira valores diretamente em uma string usando a sintaxe `${}`.
+Uma tupla é um array com um número fixo de elementos, onde cada elemento pode ter um tipo diferente. Você pode declarar uma tupla usando colchetes (`[]`) e especificando os tipos dos elementos.
 
 ```typescript
-const nome = 'Alice';
-const idade = 30;
-
-const mensagem = `Olá, meu nome é ${nome} e tenho ${idade} anos.`;
-console.log(mensagem); // "Olá, meu nome é Alice e tenho 30 anos."
+let coordenada: [number, number] = [-4.97811, -39.063631];
+console.log('latitude: ' + coordenada[0]);
+console.log('longitude: ' + coordenada[1]);
 ```
 
-2. **Concatenação de Strings:**
-   Você também pode usar a concatenação de strings para formatar strings, juntando diferentes partes com o operador `+`.
+#### `object`
+
+O tipo `object` é um tipo genérico. Tudo o que não é primitivo (como `number`, `string`, `boolean`, etc.) é um objeto. Inclusive Array e Funções.
 
 ```typescript
-const saudacao = 'Olá, ';
-const nome = 'Bob';
+et pessoa = {
+    nome: 'Alice',
+    idade: 30,
+};
+console.log(pessoa.nome); // Alice
+console.log(pessoa['nome']) // Alice
+console.log(pessoa.idade); // 30
+console.log(pessoa['idade']) // 30
+```
 
-const mensagem = saudacao + nome + '!';
-console.log(mensagem); // "Olá, Bob!"
+Em TypeScript, é possível criar tipos personalizados de objetos usando interfaces.
+
+```typescript
+interface Pessoa {
+    nome: string;
+    idade: number;
+}
+
+let pessoa: Pessoa = {
+    nome: 'Maria',
+    idade: 30,
+};
+```
+
+#### `enum`
+
+O tipo `enum` é uma maneira de definir um conjunto nomeado de valores. Ele pode ser usado para representar um conjunto fixo de opções, como dias da semana, meses do ano, etc.
+
+```typescript
+enum DiaDaSemana {
+    Domingo,
+    Segunda,
+    Terça,
+    Quarta,
+    Quinta,
+    Sexta,
+    Sábado,
+}
+let dia: DiaDaSemana = DiaDaSemana.Segunda;
+console.log(dia); // 1 (o valor associado a Segunda)
+```
+
+## União de Tipos
+
+A união de tipos em TypeScript permite que uma variável tenha mais de um tipo possível, usando o operador `|`. Exemplo:
+
+```typescript
+let valor: number | string;
+valor = 42; // válido
+valor = 'foo'; // válido
+```
+
+Só é possível acessar propriedades ou métodos comuns a todos os tipos da união. Para acessar algo específico, faça uma verificação de tipo:
+
+```typescript
+function imprimirTamanho(texto: number | string) {
+    if (typeof texto === 'string') {
+        console.log(texto.length);
+    }
+}
+```
+
+Você pode permitir que uma variável seja de um tipo ou `null`:
+
+```typescript
+let valor: number | null;
+valor = 42;
+valor = null;
+```
+
+## Conversão de tipos
+
+Em TypeScript, você pode realizar conversões entre tipos usando várias abordagens, dependendo da situação. Aqui estão algumas das maneiras mais comuns de realizar conversões de tipos:
+
+**Construtores de Tipo:**
+Muitos tipos primitivos, como `Number`, `String`, `Boolean`, `Array`, etc., também têm funções construtoras que podem ser usadas para realizar conversões explícitas.
+
+```typescript
+let valor: string = '123';
+let numero: number = Number(valor); // Conversão para número
+let texto: string = String(numero); // Conversão para string
+```
+
+**Operações Aritméticas e Lógicas:**
+
+```typescript
+let numero: number = +'5';
+let texto = '' + 5;
 ```
 
 ## Referências
 
 [qxcodefup/arcade](https://github.com/qxcodefup/arcade)  
-[Variáveis (mdn web docs)](https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Core/Scripting/Variables)  
-[Entenda a diferença entre var, let e const no JavaScript (Alura)](https://www.alura.com.br/artigos/entenda-diferenca-entre-var-let-e-const-no-javascript)
+[Estrutura de dados (mdn web docs)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide/Data_structures)  
+[Everyday Types (TypeScript Handbook)](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
