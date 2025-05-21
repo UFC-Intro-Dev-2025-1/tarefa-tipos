@@ -60,8 +60,8 @@ Em TypeScript, você pode usar tipos para definir o formato esperado das variáv
    Você pode declarar o tipo de uma variável explicitamente ao mesmo tempo em que a declara. Por exemplo:
 
 ```typescript
-let idade: number = 25;
-let nome: string = 'João';
+let idade: number;
+let nome: string;
 ```
 
 2. **Inferência de Tipo:**
