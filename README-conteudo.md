@@ -86,8 +86,8 @@ Representa números como `42`, tanto inteiros quanto números de ponto flutuante
 
 ```typescript
 // Como só usamos o number, para transformar um `float` em `int`, usamos o Math.floor
-const numero: number = 7.83;
-const parteInteira: number = Math.floor(numero);
+const numero = 7.83; // tipo number
+const parteInteira = Math.floor(numero); // tipo number
 console.log(parteInteira); // 7
 ```
 
@@ -108,7 +108,7 @@ Não existe `char` em JS ou TS. O tipo principal para representar caracteres ind
 // Para acessar o primeiro caractere de uma string,
 // você pode usar a notação de colchetes com o índice dentro :
 // OBS: o índice começa em 0 😬
-const palavra: string = 'Hello';
+const palavra = 'Hello';
 const primeiroCaractere: string = palavra[0]; // "H"
 ```
 
@@ -142,7 +142,8 @@ console.log(valorDesconhecido); // undefined
 Representa números inteiros grandes que podem exceder o limite do tipo `number`. Você pode usar o sufixo `n` para indicar um valor `bigint`.
 
 ```typescript
-const numeroGrande: bigint = 1234567890123456789012345678901234567890n;
+const numeroGrande: bigint;
+numeroGrande = 1234567890123456789012345678901234567890n;
 console.log(numeroGrande); // 1234567890123456789012345678901234567890n
 ```
 
@@ -217,10 +218,10 @@ console.log(pessoa.idade); // 30
 console.log(pessoa['idade']); // 30
 ```
 
-Em TypeScript, é possível criar tipos personalizados de objetos usando interfaces.
+Em TypeScript, é possível criar tipos personalizados de objetos usando `type` ou `interface`. Como vamos usar mais para variáveis primitivas, vamos seguir utilizando `type`. Interfaces são extensíveis e são mais utilizadas por classes.
 
 ```typescript
-interface Pessoa {
+type Pessoa = {
     nome: string;
     idade: number;
 }
@@ -294,7 +295,9 @@ let texto: string = String(numero); // Conversão para string
 
 ```typescript
 let numero: number = +'5';
+console.log(typeof numero); // number
 let texto = '' + 5;
+console.log(typeof texto); // string
 ```
 
 ## Referências
