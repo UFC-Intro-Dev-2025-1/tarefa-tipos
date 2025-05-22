@@ -207,14 +207,14 @@ console.log('longitude: ' + coordenada[1]);
 O tipo `object` é um tipo genérico. Tudo o que não é primitivo (como `number`, `string`, `boolean`, etc.) é um objeto. Inclusive Array e Funções.
 
 ```typescript
-et pessoa = {
+let pessoa = {
     nome: 'Alice',
     idade: 30,
 };
 console.log(pessoa.nome); // Alice
-console.log(pessoa['nome']) // Alice
+console.log(pessoa['nome']); // Alice
 console.log(pessoa.idade); // 30
-console.log(pessoa['idade']) // 30
+console.log(pessoa['idade']); // 30
 ```
 
 Em TypeScript, é possível criar tipos personalizados de objetos usando interfaces.
